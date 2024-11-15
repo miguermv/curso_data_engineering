@@ -13,13 +13,12 @@ renamed as (
         updated_at,
         address_id,
         last_name,
-        created_at,
-        phone_number, --quitar guiones entre numeros
-        total_orders,
+        CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
+        TRIM(REPLACE(phone_number, '-', '')) as phone number, --quitar guiones entre numeros
         first_name,
         email,
         _fivetran_deleted,
-        _fivetran_synced
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
 
     from source
 

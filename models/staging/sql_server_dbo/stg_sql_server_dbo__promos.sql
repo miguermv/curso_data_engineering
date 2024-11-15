@@ -9,16 +9,25 @@ source as (
 renamed as (
 
     select
-        case 
-            when promo_id is null then '9999'
-            else md5(promo_id)
-            end as promo_id,
+        md5(promo_id) as promo_id,
+        promo_id as desc_promo,
         discount,
         status,
         _fivetran_deleted,
-        _fivetran_synced
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
 
     from source
+
+    UNION ALL 
+
+    select 
+        md5(''),
+        'No promo',
+        0,
+        'inactive',
+        NULL,
+        NULL
+
 
 )
 

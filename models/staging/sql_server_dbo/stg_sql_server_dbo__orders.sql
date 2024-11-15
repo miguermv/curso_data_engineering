@@ -13,20 +13,21 @@ renamed as (
         shipping_service,
         shipping_cost,
         address_id,
-        created_at,
-        case 
-            when promo_id is null then '9999'
-            else md5(promo_id)
-            end as promo_id,
-        estimated_delivery_at,
+        CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
+        /*case
+            WHEN promo_id = '' THEN 'N/A'
+            ELSE promo_id
+            END AS promo_id*/
+            md5(promo_id) as promo_id,
+        CONVERT_TIMEZONE('UTC', estimated_delivery_at) as estimated_delivery_at_utc,
         order_cost,
         user_id,
         order_total,
-        delivered_at,
+        CONVERT_TIMEZONE('UTC', delivered_at) as delivered_at_utc,
         tracking_id,
         status,
         _fivetran_deleted,
-        _fivetran_synced
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc,
 
     from source
 
