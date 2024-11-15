@@ -15,10 +15,10 @@ renamed as (
         user_id,
         product_id,
         session_id,
-        created_at,
+        CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
         order_id,
         _fivetran_deleted,
-        _fivetran_synced
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
 
     from source
 

@@ -15,7 +15,7 @@ renamed as (
         address,
         state,
         _fivetran_deleted,
-        _fivetran_synced
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
 
     from source
 

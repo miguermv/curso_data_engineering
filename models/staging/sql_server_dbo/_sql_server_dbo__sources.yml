@@ -4,6 +4,8 @@ version: 2
 sources:
 
   - name: sql_server_dbo # name of the source 
+    description: > 
+      Raw data demo rom Databse.
     schema: sql_server_dbo # this is the schema our raw data lives in
     database: ALUMNO15_DEV_BRONZE_DB # this is the name of our database
 
@@ -21,7 +23,10 @@ sources:
       - name: addresses
         loaded_at_field: _fivetran_synced
         columns:
-          - name: adress_id
+          - name: address_id
+            tests:
+              - unique
+              - not_null  
           - name: zipcode
           - name: country
           - name: address

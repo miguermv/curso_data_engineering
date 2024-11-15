@@ -9,7 +9,11 @@ source as (
 renamed as (
 
     select
-
+        order_id,
+        product_id,
+        quantity,
+        _fivetran_deleted,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
     from source
 
 )
