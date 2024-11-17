@@ -52,7 +52,7 @@ sources:
               - not_null
           - name: page_url
             tests:
-              - not_null:
+              - not_null
           - name: event_type
             tests:
               - not_null
@@ -98,6 +98,8 @@ sources:
             tests:
               - not_null
           - name: promo_id
+            tests:
+              - not_null
           - name: estimated_delivery_at
           - name: order_cost
             tests:
@@ -127,11 +129,11 @@ sources:
         columns:
           - name: order_id
             tests:
-              - unique
-              - not_null
+              - relationships:
+                  to: "source('sql_server_dbo', 'orders')"
+                  field: order_id
           - name: product_id
             tests:
-              - not_null
               - relationships:
                   to: "source('sql_server_dbo', 'products')"
                   field: product_id
@@ -198,6 +200,9 @@ sources:
               - not_null
           - name: phone_number
           - name: total_orders
+            tests:
+              - not_null
+            
           - name: first_name
             tests:
               - not_null

@@ -14,7 +14,7 @@ renamed_casted AS (
           _row as budget_id
         , product_id
         , quantity
-        , month
+        , /*DATE_TRUNC('month', month) as*/  month
         , CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
     FROM src_budget
     )

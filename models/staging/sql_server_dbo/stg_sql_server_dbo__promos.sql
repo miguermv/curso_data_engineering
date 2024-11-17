@@ -21,12 +21,12 @@ renamed as (
     UNION ALL 
 
     select 
-        md5(''),
+        md5(cast('' as TEXT)),
         'No promo',
         0,
-        'inactive',
+        'active',
         NULL,
-        NULL
+       (select max(CONVERT_TIMEZONE('UTC', _fivetran_synced)) from source) 
 
 
 )

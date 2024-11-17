@@ -10,7 +10,7 @@ renamed as (
 
     select
         event_id,
-        page_url,
+        TRIM(page_url) as page_url,
         event_type,
         user_id,
         product_id,
