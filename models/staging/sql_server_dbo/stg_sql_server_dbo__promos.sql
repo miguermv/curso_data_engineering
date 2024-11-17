@@ -9,9 +9,9 @@ source as (
 renamed as (
 
     select
-        md5(promo_id) as promo_id,
+        {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
         promo_id as desc_promo,
-        discount,
+        discount as discount_euros,
         status,
         _fivetran_deleted,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc

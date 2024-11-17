@@ -1,10 +1,8 @@
 version: 2
 
-
 sources:
-
-  - name: sql_server_dbo # name of the source 
-    description: > 
+  - name: sql_server_dbo # name of the source
+    description: >
       Raw data demo rom Databse.
     schema: sql_server_dbo # this is the schema our raw data lives in
     database: ALUMNO15_DEV_BRONZE_DB # this is the name of our database
@@ -15,22 +13,33 @@ sources:
       identifier: false
 
     freshness:
-      warn_after: {count: 24, period: day}
-      error_after: {count: 48, period: day}
+      warn_after: { count: 24, period: day }
+      error_after: { count: 48, period: day }
 
     tables:
-
       - name: addresses
         loaded_at_field: _fivetran_synced
         columns:
           - name: address_id
             tests:
               - unique
-              - not_null  
+              - not_null
           - name: zipcode
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "{{ validate_us_zipcode('zipcode') }}"
           - name: country
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "{{ validate_country('country') }}"
           - name: address
+            tests:
+              - not_null
           - name: state
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -38,13 +47,36 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: event_id
+            tests:
+              - unique
+              - not_null
           - name: page_url
+            tests:
+              - not_null:
           - name: event_type
+            tests:
+              - not_null
           - name: user_id
+            tests:
+            - relationships:
+                to: "source('sql_server_db','users')"
+                field: user_id
           - name: product_id
+            tests:
+              - relationships:
+                  to: "source('sql_server_db','products')"
+                  field: product_id
           - name: session_id
+            tests:
+              - not_null
           - name: created_at
+            tests:
+              - not_null
           - name: order_id
+            tests:
+              - relationships:
+                  to: "source('sql_server_db','orders')"
+                  field: order_id
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -52,18 +84,41 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            tests:
+              - unique
+              - not_null
           - name: shipping_service
           - name: shipping_cost
-          - name: addres_id
+          - name: address_id
+            tests:
+              - relationships:
+                  to: "source('sql_server_dbo', 'addresses')"
+                  field: address_id
           - name: created_at
+            tests:
+              - not_null
           - name: promo_id
           - name: estimated_delivery_at
           - name: order_cost
+            tests:
+               - positive_values
           - name: user_id
+            tests:
+              - not_null
+              - relationships:
+                  to: "source('sql_server_dbo', 'users')"
+                  field: user_id
           - name: order_total
+            tests:
+              - not_null
+              - positive_values
           - name: delivered_at
           - name: tracking_id
+            tests:
+              - unique
           - name: status
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -71,8 +126,18 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            tests:
+              - unique
+              - not_null
           - name: product_id
+            tests:
+              - not_null
+              - relationships:
+                  to: "source('sql_server_dbo', 'products')"
+                  field: product_id
           - name: quantity
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -80,9 +145,19 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: product_id
+            tests:
+              - unique
+              - not_null
           - name: price
+            tests:
+              - not_null
           - name: name
+            tests:
+              - unique
+              - not_null
           - name: inventory
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -90,8 +165,15 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: promo_id
+            tests:
+              - unique
+              - not_null
           - name: discount
+            tests: 
+              - not_null
           - name: status
+            tests:
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
@@ -99,13 +181,29 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
+            tests:
+              - unique
+              - not_null
           - name: update_at
-          - name: addres_id
+          - name: address_id
+            tests:
+              - relationships:
+                  to: "source('sql_server_db','addresses')"
+                  field: address_id
           - name: last_name
+            tests:
+              - not_null
           - name: created_at
+            tests:
+              - not_null
           - name: phone_number
           - name: total_orders
           - name: first_name
+            tests:
+              - not_null
           - name: email
+            tests:
+              - unique
+              - not_null
           - name: _fivetran_deleted
           - name: _fivetran_synced

@@ -10,15 +10,15 @@ renamed as (
 
     select
         order_id,
-        shipping_service,
+        case
+            when TRIM(shipping_service) = ''
+                then NULL
+            else shipping_service
+            end as shipping_service,
         shipping_cost,
         address_id,
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        /*case
-            WHEN promo_id = '' THEN 'N/A'
-            ELSE promo_id
-            END AS promo_id*/
-            md5(promo_id) as promo_id,
+        {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
         CONVERT_TIMEZONE('UTC', estimated_delivery_at) as estimated_delivery_at_utc,
         order_cost,
         user_id,
