@@ -23,9 +23,15 @@ sources:
               - unique
               - not_null  
           - name: product_id
- 
+            tests:
+            - relationships:
+                to: source('sql_server_db','products')
+                field: product_id
           - name: quantity
             tests:
               - positive_values
           - name: month
+            tests:
+              - unique
+              - not_null
           - name: _fivetran_synced
