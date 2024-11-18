@@ -2,7 +2,7 @@ with
 
 source as (
 
-    select * from {{ source('sql_server_dbo', 'orders_items') }}
+    select * from {{ source('sql_server_dbo', 'order_items') }}
 
 ),
 

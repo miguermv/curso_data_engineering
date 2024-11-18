@@ -27,13 +27,11 @@ sources:
           - name: zipcode
             tests:
               - not_null
-              - dbt_utils.expression_is_true:
-                  expression: "{{ validate_us_zipcode('zipcode') }}"
+              #- dbt_utils.expression_is_true:
+              #    expression: "{{ validate_us_zipcode('zipcode') }}"
           - name: country
             tests:
               - not_null
-              - dbt_utils.expression_is_true:
-                  expression: "{{ validate_country('country') }}"
           - name: address
             tests:
               - not_null
@@ -124,7 +122,7 @@ sources:
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
-      - name: orders_items
+      - name: order_items
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id

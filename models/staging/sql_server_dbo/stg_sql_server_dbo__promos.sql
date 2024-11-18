@@ -9,7 +9,7 @@ source as (
 renamed as (
 
     select
-        {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
+        {{ dbt_utils.generate_surrogate_key(['TRIM(promo_id)']) }} as promo_id,
         promo_id as desc_promo,
         discount as discount_euros,
         status,
@@ -21,12 +21,12 @@ renamed as (
     UNION ALL 
 
     select 
-        md5(cast('' as TEXT)),
+        {{ dbt_utils.generate_surrogate_key(["'No promo'"]) }},
         'No promo',
         0,
         'active',
         NULL,
-       (select max(CONVERT_TIMEZONE('UTC', _fivetran_synced)) from source) 
+       '1970-01-01T16:00:37.597000+00:00'
 
 
 )

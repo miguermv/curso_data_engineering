@@ -10,11 +10,11 @@ renamed as (
 
     select
         user_id,
-        updated_at,
+        CONVERT_TIMEZONE('UTC',  updated_at) as updated_at_utc,
         address_id,
         last_name,
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        TRIM(REPLACE(phone_number, '-', '')) as phone number, --quitar guiones entre numeros
+        TRIM(REPLACE(phone_number, '-', '')) as phone_number, 
         first_name,
         email,
         _fivetran_deleted,
