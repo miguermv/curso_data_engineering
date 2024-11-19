@@ -27,7 +27,8 @@ renamed as (
         NULLIF(tracking_id, '') as tracking_id,
         status,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::date as date_load_utc,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::time as time_load_utc
 
     from source
 

@@ -14,7 +14,8 @@ renamed as (
         discount as discount_euros,
         status,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::date as date_load_utc,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::time as time_load_utc
 
     from source
 
@@ -26,7 +27,8 @@ renamed as (
         0,
         'active',
         NULL,
-       '1970-01-01T16:00:37.597000+00:00'
+       '1970-01-01',
+       '00:00:00'
 
 
 )

@@ -9,9 +9,8 @@ source as (
 renamed as (
 
     select
-        {{ dbt_utils.generate_surrogate_key([]) }},
-        shipping_service,
-        shipping_cost
+        {{ dbt_utils.generate_surrogate_key([]) }} as shipping_service_id,
+        shipping_service
 
     from source
 

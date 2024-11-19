@@ -18,7 +18,8 @@ renamed as (
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
         order_id,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::date as date_load_utc,
+        CONVERT_TIMEZONE('UTC', _fivetran_synced)::time as time_load_utc
 
     from source
 
