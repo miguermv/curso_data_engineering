@@ -5,18 +5,9 @@ models:
     description: Data about dates.
     columns:
       - name: date_id
-        description: Primary key, a unique ID value for each row. Each row represents a separate date at day level.
-        tests:
-          - unique
-          - not_null
-      - name: date_day
         description: Full date value at day level (YYYY-MM-DD).
         tests:
           - unique
-          - not_null
-      - name: day_of_week_iso
-        description: ISO day of the week (1 = Monday, 7 = Sunday).
-        tests:
           - not_null
       - name: day_of_week_name
         description: Full name of the day of the week (e.g., Monday, Tuesday).
@@ -40,22 +31,6 @@ models:
           - not_null
       - name: week_end_date
         description: The end date (Sunday) of the calendar week containing the date.
-        tests:
-          - not_null
-      - name: iso_week_start_date
-        description: The start date (Monday) of the ISO week containing the date.
-        tests:
-          - not_null
-      - name: iso_week_end_date
-        description: The end date (Sunday) of the ISO week containing the date.
-        tests:
-          - not_null
-      - name: iso_week_of_year
-        description: ISO week number of the year (1-53) for the given date.
-        tests:
-          - not_null
-      - name: month_id
-        description: Unique ID for the month (e.g., 202301 for January 2023).
         tests:
           - not_null
       - name: month_of_year
@@ -88,10 +63,6 @@ models:
           - not_null
       - name: quarter_end_date
         description: The end date of the quarter containing the date.
-        tests:
-          - not_null
-      - name: year_id
-        description: Year identifier (e.g., 2023).
         tests:
           - not_null
       - name: year_number
