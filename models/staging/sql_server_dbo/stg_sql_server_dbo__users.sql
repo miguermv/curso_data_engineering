@@ -1,8 +1,20 @@
+{{ config(
+    materialized='incremental',
+    unique_key = '_row'
+    ) 
+}}
+
 with 
 
 source as (
 
     select * from {{ source('sql_server_dbo', 'users') }}
+
+{% if is_incremental() %}
+
+	  WHERE _fivetran_synced > (SELECT MAX(_fivetran_synced) FROM {{ this }} )
+
+{% endif %}
 
 ),
 
@@ -14,12 +26,12 @@ renamed as (
         address_id,
         last_name,
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        TRIM(REPLACE(phone_number, '-', '')) as phone_number, 
+        TRIM(REPLACE(phone_number, '-', ''))::INT as phone_number, 
         first_name,
         email,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced)::date as date_load_utc,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced)::time as time_load_utc
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
+
 
     from source
 

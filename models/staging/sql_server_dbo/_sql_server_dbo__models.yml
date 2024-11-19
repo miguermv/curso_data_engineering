@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: addresses
+    description: "Stage table for address data."
+    columns:
+      - name: address_id
+        description: "Unique identifier for the address."
+        tests:
+          - not_null
+          - unique
+      - name: zipcode
+        description: "Postal code for the address."
+        tests:
+          - not_null
+      - name: country
+        description: "Country of the address."
+        tests:
+          - not_null
+      - name: address
+        description: "Detailed address line."
+        tests:
+          - not_null
+      - name: state
+        description: "State or region of the address."
+        tests:
+          - not_null
+      - name: _fivetran_deleted
+        description: "Flag indicating if the record was deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp for when the record was loaded."

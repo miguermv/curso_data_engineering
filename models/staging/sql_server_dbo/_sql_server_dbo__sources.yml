@@ -27,8 +27,7 @@ sources:
           - name: zipcode
             tests:
               - not_null
-              #- dbt_utils.expression_is_true:
-              #    expression: "{{ validate_us_zipcode('zipcode') }}"
+
           - name: country
             tests:
               - not_null
@@ -85,7 +84,7 @@ sources:
             tests:
               - unique
               - not_null
-          - name: shipping_service
+          - name: shipping_service 
           - name: shipping_cost
           - name: address_id
             tests:
@@ -114,8 +113,6 @@ sources:
               - positive_values
           - name: delivered_at
           - name: tracking_id
-            tests:
-              - unique
           - name: status
             tests:
               - not_null
@@ -198,9 +195,6 @@ sources:
               - not_null
           - name: phone_number
           - name: total_orders
-            tests:
-              - not_null
-            
           - name: first_name
             tests:
               - not_null

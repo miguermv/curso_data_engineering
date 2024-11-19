@@ -1,8 +1,15 @@
+{{ config(
+    materialized='incremental',
+    unique_key = 'promo_id'
+    ) 
+}}
+
 with 
 
 source as (
 
     select * from {{ source('sql_server_dbo', 'promos') }}
+
 
 ),
 
@@ -14,8 +21,8 @@ renamed as (
         discount as discount_euros,
         status,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced)::date as date_load_utc,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced)::time as time_load_utc
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
+
 
     from source
 
@@ -27,10 +34,15 @@ renamed as (
         0,
         'active',
         NULL,
-       '1970-01-01',
-       '00:00:00'
+       '1970-01-01T00:00:00'
 
 
 )
 
 select * from renamed
+
+{% if is_incremental() %}
+
+	  WHERE datetime_load_utc > (SELECT MAX(datetime_load_utc) FROM {{ this }} )
+
+{% endif %}
