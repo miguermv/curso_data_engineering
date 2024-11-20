@@ -10,11 +10,6 @@ source as (
 
     select * from {{ source('sql_server_dbo', 'events') }}
 
-{% if is_incremental() %}
-
-	  WHERE _fivetran_synced > (SELECT MAX(_fivetran_synced) FROM {{ this }} )
-
-{% endif %}
     ),
 
 renamed as (
@@ -37,3 +32,9 @@ renamed as (
 )
 
 select * from renamed
+
+{% if is_incremental() %}
+
+	  WHERE datetime_load_utc > (SELECT MAX(datetime_load_utc) FROM {{ this }} )
+
+{% endif %}

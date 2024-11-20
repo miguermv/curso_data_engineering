@@ -33,7 +33,7 @@ renamed as (
         CASE
             WHEN promo_id is NULL or promo_id = '' 
                 THEN {{ dbt_utils.generate_surrogate_key(["'No promo'"]) }}
-            ELSE {{ dbt_utils.generate_surrogate_key(['TRIM(promo_id)']) }}
+            ELSE {{ dbt_utils.generate_surrogate_key(['promo_id']) }}
             END as promo_id,
         CONVERT_TIMEZONE('UTC', estimated_delivery_at) as estimated_delivery_at_utc,
         order_cost as order_cost_euros,

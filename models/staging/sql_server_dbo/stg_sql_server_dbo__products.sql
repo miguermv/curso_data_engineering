@@ -22,9 +22,9 @@ renamed as (
 
     select
         product_id,
-        price,
-        name,
-        inventory,
+        price as product_price,
+        name as product_name,
+        inventory as product_inventory,
         _fivetran_deleted,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
 

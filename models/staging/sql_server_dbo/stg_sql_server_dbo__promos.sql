@@ -17,9 +17,9 @@ renamed as (
 
     select
         {{ dbt_utils.generate_surrogate_key(['TRIM(promo_id)']) }} as promo_id,
-        promo_id as desc_promo,
+        promo_id as promo_desc,
         discount as discount_euros,
-        status,
+        status as promo_status,
         _fivetran_deleted,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
 
