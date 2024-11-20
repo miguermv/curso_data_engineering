@@ -26,7 +26,7 @@ renamed as (
         address_id,
         last_name,
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        TRIM(REPLACE(phone_number, '-', ''))::INT as phone_number, 
+        TRIM(REPLACE(phone_number, '-', '')) as phone_number, 
         first_name,
         email,
         _fivetran_deleted,

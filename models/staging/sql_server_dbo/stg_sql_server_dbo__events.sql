@@ -22,7 +22,7 @@ renamed as (
         product_id,
         session_id,
         CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        order_id,
+        NULLIF(TRIM(order_id), '') as order_id,
         _fivetran_deleted,
         CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
 
