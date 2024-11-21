@@ -1,3 +1,5 @@
+#Arreglar: añadir al yaml las tablas order_status y order_costs + Tests
+
 version: 2
 
 models:
@@ -150,5 +152,5 @@ models:
     columns:
       - name: shipping_service_id
         description: "Unique identifier for the shipping service."
-      - name: shipping_service_company
+      - name: shipping_company
         description: "Name of the shipping service company."

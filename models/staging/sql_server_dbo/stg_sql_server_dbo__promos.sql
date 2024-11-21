@@ -30,7 +30,7 @@ renamed as (
 
     select 
         {{ dbt_utils.generate_surrogate_key(["'No promo'"]) }},
-        'No promo',
+        'no promo',
         0,
         'active',
         NULL,

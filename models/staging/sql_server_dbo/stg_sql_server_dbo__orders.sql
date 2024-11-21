@@ -6,15 +6,10 @@
 
 with 
 
-source as (
+base_orders as (
 
-    select * from {{ source('sql_server_dbo', 'orders') }}
+    select * from {{ ref('base_sql_server_dbo__orders') }}
 
-{% if is_incremental() %}
-
-	  WHERE _fivetran_synced > (SELECT MAX(_fivetran_synced) FROM {{ this }} )
-
-{% endif %}
 
 ),
 
@@ -22,32 +17,29 @@ renamed as (
 
     select
         order_id,
-        CASE 
-            WHEN shipping_service IS NULL OR shipping_service = '' 
-                THEN {{ dbt_utils.generate_surrogate_key(["'no_shipped_yet'"]) }}
-            ELSE {{ dbt_utils.generate_surrogate_key(['shipping_service']) }}
-        END AS shipping_service_id,
-        shipping_cost as shipping_cost_euros,
-        address_id,
-        CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        CASE
-            WHEN promo_id is NULL or promo_id = '' 
-                THEN {{ dbt_utils.generate_surrogate_key(["'No promo'"]) }}
-            ELSE {{ dbt_utils.generate_surrogate_key(['promo_id']) }}
-            END as promo_id,
-        CONVERT_TIMEZONE('UTC', estimated_delivery_at) as estimated_delivery_at_utc,
-        order_cost as order_cost_euros,
         user_id,
-        order_total as order_total_euros,
-        CONVERT_TIMEZONE('UTC', delivered_at) as delivered_at_utc,
-        NULLIF(tracking_id, '') as tracking_id,
-        status,
+        address_id,
+        promo_id,
+        shipping_service_id,
+        order_status_id,
+        created_at_utc,
+        estimated_delivery_at_utc,
+        delivered_at_utc,
+        tracking_id,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
+        datetime_load_utc
         
 
-    from source
+    from base_orders
 
 )
 
 select * from renamed
+
+/*{% if is_incremental() %}
+
+	  WHERE datetime_load_utc > (SELECT MAX(datetime_load_utc) FROM {{ this }} )
+
+{% endif %}*/
+
+--Arreglar incremental: si ejecuto con incremental devuelve la tabla vacia
