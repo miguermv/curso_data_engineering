@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_others__dates
+    description: Data about dates.
+    columns:
+      - name: date_id
+        description: Full date value at day level (YYYY-MM-DD).
+        tests:
+          - unique
+          - not_null
+      - name: day_of_week_name
+        description: Full name of the day of the week (e.g., Monday, Tuesday).
+        tests:
+          - not_null
+      - name: day_of_week_name_short
+        description: Abbreviated name of the day of the week (e.g., Mon, Tue).
+        tests:
+          - not_null
+      - name: day_of_month
+        description: Day of the month (1-31) for the given date.
+        tests:
+          - not_null
+      - name: day_of_year
+        description: Day of the year (1-365/366 for leap years).
+        tests:
+          - not_null
+      - name: week_start_date
+        description: The start date (Monday) of the calendar week containing the date.
+        tests:
+          - not_null
+      - name: week_end_date
+        description: The end date (Sunday) of the calendar week containing the date.
+        tests:
+          - not_null
+      - name: month_of_year
+        description: Month number of the year (1 = January, 12 = December).
+        tests:
+          - not_null
+      - name: month_name
+        description: Full name of the month (e.g., January, February).
+        tests:
+          - not_null
+      - name: month_name_short
+        description: Abbreviated name of the month (e.g., Jan, Feb).
+        tests:
+          - not_null
+      - name: month_start_date
+        description: The first date of the month containing the date.
+        tests:
+          - not_null
+      - name: month_end_date
+        description: The last date of the month containing the date.
+        tests:
+          - not_null
+      - name: quarter_of_year
+        description: Quarter number of the year (1 = Q1, 4 = Q4).
+        tests:
+          - not_null
+      - name: quarter_start_date
+        description: The start date of the quarter containing the date.
+        tests:
+          - not_null
+      - name: quarter_end_date
+        description: The end date of the quarter containing the date.
+        tests:
+          - not_null
+      - name: year_number
+        description: Calendar year number (e.g., 2023).
+        tests:
+          - not_null

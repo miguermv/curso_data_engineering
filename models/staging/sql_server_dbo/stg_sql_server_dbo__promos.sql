@@ -1,34 +1,48 @@
+{{ config(
+    materialized='incremental',
+    unique_key = 'promo_id'
+    ) 
+}}
+
 with 
 
 source as (
 
     select * from {{ source('sql_server_dbo', 'promos') }}
 
+
 ),
 
 renamed as (
 
     select
-        {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
-        promo_id as desc_promo,
+        {{ dbt_utils.generate_surrogate_key(['TRIM(promo_id)']) }} as promo_id,
+        promo_id as promo_desc,
         discount as discount_euros,
-        status,
+        status as promo_status,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc
+        CONVERT_TIMEZONE('UTC', _fivetran_synced) as datetime_load_utc
+
 
     from source
 
     UNION ALL 
 
     select 
-        md5(cast('' as TEXT)),
-        'No promo',
+        {{ dbt_utils.generate_surrogate_key(["'No promo'"]) }},
+        'no promo',
         0,
         'active',
         NULL,
-       (select max(CONVERT_TIMEZONE('UTC', _fivetran_synced)) from source) 
+       '1970-01-01T00:00:00'
 
 
 )
 
 select * from renamed
+
+{% if is_incremental() %}
+
+	  WHERE datetime_load_utc > (SELECT MAX(datetime_load_utc) FROM {{ this }} )
+
+{% endif %}

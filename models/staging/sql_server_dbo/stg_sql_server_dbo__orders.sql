@@ -1,8 +1,15 @@
+{{ config(
+    materialized='incremental',
+    unique_key = 'order_id'
+    ) 
+}}
+
 with 
 
-source as (
+base_orders as (
 
-    select * from {{ source('sql_server_dbo', 'orders') }}
+    select * from {{ ref('base_sql_server_dbo__orders') }}
+
 
 ),
 
@@ -10,27 +17,29 @@ renamed as (
 
     select
         order_id,
-        case
-            when TRIM(shipping_service) = ''
-                then NULL
-            else shipping_service
-            end as shipping_service,
-        shipping_cost,
-        address_id,
-        CONVERT_TIMEZONE('UTC', created_at) as created_at_utc,
-        {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
-        CONVERT_TIMEZONE('UTC', estimated_delivery_at) as estimated_delivery_at_utc,
-        order_cost,
         user_id,
-        order_total,
-        CONVERT_TIMEZONE('UTC', delivered_at) as delivered_at_utc,
+        address_id,
+        promo_id,
+        shipping_service_id,
+        order_status_id,
+        created_at_utc,
+        estimated_delivery_at_utc,
+        delivered_at_utc,
         tracking_id,
-        status,
         _fivetran_deleted,
-        CONVERT_TIMEZONE('UTC', _fivetran_synced) as date_load_utc,
+        datetime_load_utc
+        
 
-    from source
+    from base_orders
 
 )
 
 select * from renamed
+
+/*{% if is_incremental() %}
+
+	  WHERE datetime_load_utc > (SELECT MAX(datetime_load_utc) FROM {{ this }} )
+
+{% endif %}*/
+
+--Arreglar incremental: si ejecuto con incremental devuelve la tabla vacia

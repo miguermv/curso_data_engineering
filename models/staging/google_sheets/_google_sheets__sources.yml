@@ -39,9 +39,15 @@ sources:
             tests:
               - not_null
               - positive_values
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: number
           - name: month
             description: >
               Each month for the budget -> End of the month.
             tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: date
           - name: _fivetran_synced
+            description: >
+              The exact date and time when the data was loaded.

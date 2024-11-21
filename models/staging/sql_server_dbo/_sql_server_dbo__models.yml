@@ -1,0 +1,156 @@
+#Arreglar: añadir al yaml las tablas order_status y order_costs + Tests
+
+version: 2
+
+models:
+  - name: addresses
+    description: "Stage table for address data."
+    columns:
+      - name: address_id
+        description: "Unique identifier for the address."
+        tests:
+          - not_null
+          - unique
+      - name: zipcode
+        description: "Postal code for the address."
+        tests:
+          - not_null
+      - name: country
+        description: "Country of the address."
+        tests:
+          - not_null
+      - name: address
+        description: "Detailed address line."
+        tests:
+          - not_null
+      - name: state
+        description: "State or region of the address."
+        tests:
+          - not_null
+      - name: _fivetran_deleted
+        description: "Flag indicating if the record was deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp for when the record was loaded."
+
+  - name: events
+    description: "Table for storing event-related data with user activity and product interactions."
+    columns:
+      - name: event_id
+        description: "Unique identifier for the event."
+      - name: page_url
+        description: "URL of the page where the event occurred."
+      - name: event_type
+        description: "Type of event, such as click, view, or purchase."
+      - name: user_id
+        description: "Unique identifier for the user who triggered the event."
+      - name: product_id
+        description: "Unique identifier for the product associated with the event."
+      - name: session_id
+        description: "Unique identifier for the user session during which the event occurred."
+      - name: created_at_utc
+        description: "UTC timestamp for when the event was created."
+      - name: order_id
+        description: "Unique identifier for the order associated with the event, if applicable."
+      - name: _fivetran_deleted
+        description: "Flag indicating if the record was deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp for when the record was synced."
+
+  - name: order_items
+    description: "Table for storing details about items included in orders."
+    columns:
+      - name: order_items_id
+        description: "Unique identifier for the order items."
+      - name: order_id
+        description: "Identifier for the order to which the item belongs."
+      - name: product_id
+        description: "Identifier for the product included in the order."
+      - name: quantity
+        description: "Quantity of the product included in the order."
+      - name: _fivetran_deleted
+        description: "Flag indicating if the record was deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp for when the record was synced"
+
+  - name: orders
+    description: "Table for storing order-related data, including shipping, promotions, and delivery details."
+    columns:
+      - name: order_id
+        description: "Unique identifier for the order."
+      - name: shipping_service_id
+        description: "Unique identifier for the shipping service used in the order."
+      - name: shipping_cost_euros
+        description: "Cost of shipping for the order, expressed in euros."
+      - name: address_id
+        description: "Identifier for the address associated with the order."
+      - name: created_at_utc
+        description: "UTC timestamp indicating when the order was created."
+      - name: promo_id
+        description: "Unique identifier for the promotion applied to the order, if any."
+      - name: estimated_delivery_at_utc
+        description: "UTC timestamp indicating the estimated delivery date and time."
+      - name: order_cost_euros
+        description: "Cost of the order, excluding shipping and promotions, expressed in euros."
+      - name: user_id
+        description: "Unique identifier for the user who placed the order."
+      - name: order_total_euros
+        description: "Total cost of the order, including shipping and promotions, expressed in euros."
+      - name: delivered_at_utc
+        description: "UTC timestamp indicating when the order was delivered."
+      - name: tracking_id
+        description: "Identifier for tracking the shipment of the order."
+      - name: status
+        description: "Current status of the order (e.g., pending, shipped, delivered)."
+      - name: _fivetran_deleted
+        description: "Flag indicating whether the record has been deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp indicating when the record was last loaded."
+
+  - name: products
+    description: "Table for storing product-related data, including price, inventory, and product details."
+    columns:
+      - name: product_id
+        description: "Unique identifier for the product."
+      - name: product_price
+        description: "Price of the product."
+      - name: product_name
+        description: "Name of the product."
+      - name: product_inventory
+        description: "Inventory count for the product."
+      - name: _fivetran_deleted
+        description: "Flag indicating whether the record has been deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp indicating when the record was last loaded."
+
+  - name: users
+    description: "Table for storing user details, including personal information and timestamps."
+    columns:
+      - name: user_id
+        description: "Unique identifier for the user."
+      - name: updated_at_utc
+        description: "UTC timestamp indicating when the user information was last updated."
+      - name: address_id
+        description: "Identifier for the user's address."
+      - name: last_name
+        description: "Last name of the user."
+      - name: created_at_utc
+        description: "UTC timestamp indicating when the user was created."
+      - name: phone_number
+        description: "Phone number of the user, stored as an integer with hyphens removed."
+      - name: first_name
+        description: "First name of the user."
+      - name: email
+        description: "Email address of the user."
+      - name: _fivetran_deleted
+        description: "Flag indicating whether the record has been deleted."
+      - name: datetime_load_utc
+        description: "UTC timestamp indicating when the record was last loaded."
+
+
+  - name: shipping_services
+    description: "Table for storing shipping service information, including the unique identifier and company name."
+    columns:
+      - name: shipping_service_id
+        description: "Unique identifier for the shipping service."
+      - name: shipping_company
+        description: "Name of the shipping service company."
