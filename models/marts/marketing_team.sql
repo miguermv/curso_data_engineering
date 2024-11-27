@@ -22,6 +22,13 @@ orders as (
 
     ),
 
+orders_costs as (
+
+    select * from {{ ref('stg_sql_server_dbo__orders_costs') }}
+
+
+    ),
+
 promo as (
 
     select * from {{ ref('stg_sql_server_dbo__promos') }}
@@ -61,6 +68,7 @@ renamed as (
 
     from users u
     join orders o on u.user_id = o.user_id
+    join orders_costs oc on o.order_id = oc.order_id
     join address a on u.address_id = a.address_id
     join promo p on o.promo_id = p.promo_id
     inner join order_items i on i.order_id = o.order_id

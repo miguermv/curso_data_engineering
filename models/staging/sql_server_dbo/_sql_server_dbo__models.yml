@@ -3,7 +3,7 @@
 version: 2
 
 models:
-  - name: addresses
+  - name: stg_sql_server_dbo__addresses
     description: "Stage table for address data."
     columns:
       - name: address_id
@@ -32,7 +32,7 @@ models:
       - name: datetime_load_utc
         description: "UTC timestamp for when the record was loaded."
 
-  - name: events
+  - name: stg_sql_server_dbo__events
     description: "Table for storing event-related data with user activity and product interactions."
     columns:
       - name: event_id
@@ -56,7 +56,7 @@ models:
       - name: datetime_load_utc
         description: "UTC timestamp for when the record was synced."
 
-  - name: order_items
+  - name: stg_sql_server_dbo__order_items
     description: "Table for storing details about items included in orders."
     columns:
       - name: order_items_id
@@ -72,7 +72,7 @@ models:
       - name: datetime_load_utc
         description: "UTC timestamp for when the record was synced"
 
-  - name: orders
+  - name: stg_sql_server_dbo__orders
     description: "Table for storing order-related data, including shipping, promotions, and delivery details."
     columns:
       - name: order_id
@@ -106,7 +106,35 @@ models:
       - name: datetime_load_utc
         description: "UTC timestamp indicating when the record was last loaded."
 
-  - name: products
+  - name: stg_sql_server_dbo__orders_costs
+    description: ""
+    columns:          
+      - name: order_status_id
+        description: ""
+      - name: order_status_desc
+        description: ""
+
+  - name: stg_sql_server_dbo__orders_status
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+      - name: shipping_cost_euros
+        description: ""
+      - name: order_cost_euros
+        description: ""
+      - name: order_total_euros
+        description: ""
+
+  - name: stg_sql_server_dbo__shipping_services
+    description: "Table for storing shipping service information, including the unique identifier and company name."
+    columns:
+      - name: shipping_service_id
+        description: "Unique identifier for the shipping service."
+      - name: shipping_company
+        description: "Name of the shipping service company."
+
+  - name: stg_sql_server_dbo__products
     description: "Table for storing product-related data, including price, inventory, and product details."
     columns:
       - name: product_id
@@ -122,7 +150,23 @@ models:
       - name: datetime_load_utc
         description: "UTC timestamp indicating when the record was last loaded."
 
-  - name: users
+  - name: stg_sql_server_dbo__orders_status
+    description: ""
+    columns:
+      - name: PROMO_ID
+        description: ""
+      - name: PROMO_DESC
+        description: ""
+      - name: DISCOUNT_EUROS
+        description: ""
+      - name: PROMO_STATUS
+        description: ""
+      - name: _FIVETRAN_DELETED
+        description: ""
+      - name: DATETIME_LOAD_UTC
+        description: ""
+
+  - name: stg_sql_server_dbo__users
     description: "Table for storing user details, including personal information and timestamps."
     columns:
       - name: user_id
@@ -147,10 +191,3 @@ models:
         description: "UTC timestamp indicating when the record was last loaded."
 
 
-  - name: shipping_services
-    description: "Table for storing shipping service information, including the unique identifier and company name."
-    columns:
-      - name: shipping_service_id
-        description: "Unique identifier for the shipping service."
-      - name: shipping_company
-        description: "Name of the shipping service company."
